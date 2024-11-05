@@ -8,7 +8,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.List;
 
-class PowerMain {
+public class PowerMain {
     public static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) throws Exception {
         double fossilFreePercentage = powerData.getFossilFreePercentage();
 

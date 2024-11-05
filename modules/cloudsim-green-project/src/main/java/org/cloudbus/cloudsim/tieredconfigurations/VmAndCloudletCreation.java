@@ -49,7 +49,7 @@ public class VmAndCloudletCreation {
         CloudSim.stopSimulation();
     }
 
-    private static List<Vm> createVMs(int userId, int vmCount) {
+    public static List<Vm> createVMs(int userId, int vmCount) {
         List<Vm> vmList = new ArrayList<>();
         int mips = 1000;
         int ram = 2048;
@@ -64,7 +64,7 @@ public class VmAndCloudletCreation {
         return vmList;
     }
 
-    private static List<Cloudlet> createCloudlets(int userId, int cloudletCount) {
+    public static List<Cloudlet> createCloudlets(int userId, int cloudletCount) {
         List<Cloudlet> cloudletList = new ArrayList<>();
         long length = 40000;
         long fileSize = 300;

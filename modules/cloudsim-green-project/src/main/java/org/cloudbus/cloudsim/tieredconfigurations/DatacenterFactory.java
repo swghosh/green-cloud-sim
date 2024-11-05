@@ -27,13 +27,15 @@ public class DatacenterFactory {
         int bw = 20000; // 20 Gbps bandwidth
 
         List<Host> hostList = new ArrayList<>();
-        hostList.add(new Host(0,
+        for (int i = 0; i < 100; i++) {
+            hostList.add(new Host(i,
                 new RamProvisionerSimple(ram),
                 new BwProvisionerSimple(bw),
                 storage,
                 peList,
                 new VmSchedulerTimeShared(peList)));
-
+        }
+        
         // Datacenter characteristics
         DatacenterCharacteristics characteristics = new DatacenterCharacteristics(
                 "x86", "Linux", "Xen", hostList, 10.0, 0.01, 0.05, 0.001, 0.0);
