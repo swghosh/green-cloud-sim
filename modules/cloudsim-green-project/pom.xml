@@ -15,6 +15,14 @@
     <name>cloudsim-green-project</name>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.cloudsimplus/cloudsimplus -->
+        <dependency>
+            <groupId>org.cloudsimplus</groupId>
+            <artifactId>cloudsimplus</artifactId>
+            <version>8.5.4</version>
+        </dependency>
+
+
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
