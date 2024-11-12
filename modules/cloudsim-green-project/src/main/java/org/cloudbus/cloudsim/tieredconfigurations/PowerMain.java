@@ -52,12 +52,13 @@ public class PowerMain {
             broker.submitCustomVmList(vmList);
             broker.submitCustomCloudletList(cloudletList);
 
+            CloudSim.terminateSimulation(3600);
             // Start simulation
             CloudSim.startSimulation();
 
             // Get and print the results
-            List<Cloudlet> resultList = broker.getCloudletReceivedList();
             CloudSim.stopSimulation();
+            List<Cloudlet> resultList = broker.getCloudletReceivedList();
             printCloudletResults(resultList);
 
         } catch (Exception e) {
