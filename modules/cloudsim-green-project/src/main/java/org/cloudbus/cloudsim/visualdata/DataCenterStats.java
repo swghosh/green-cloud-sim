@@ -24,9 +24,9 @@ public class DataCenterStats {
 
   public static void saveDatacenterStatistics(FileWriter writer, String name, int mips, int ram, long storage, int bw) throws IOException {
     writer.append(name).append(",")
-      .append(String.valueOf(mips)).append(",")
-      .append(String.valueOf(ram)).append(",")
-      .append(String.valueOf(storage)).append(",")
-      .append(String.valueOf(bw)).append("\n");
+            .append(String.valueOf(mips)).append(",")
+            .append(String.valueOf(ram)).append(",")
+            .append(String.valueOf(storage)).append(",")
+            .append(String.valueOf(bw)).append("\n");
   }
 }
