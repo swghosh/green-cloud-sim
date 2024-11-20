@@ -1,7 +1,9 @@
 package org.cloudbus.cloudsim.tieredconfigurations;
 
-import io.prometheus.client.Gauge;
-import io.prometheus.client.exporter.PushGateway;
+import org.cloudbus.cloudsim.*;
+import io.prometheus.metrics.exporter.pushgateway.PushGateway;
+import io.prometheus.metrics.core.metrics.Gauge;
+
 import java.util.*;
 
 public class GreenMetricsPublisher {
@@ -91,9 +93,9 @@ public class GreenMetricsPublisher {
         double totalMips = 0;
         double usedMips = 0;
         
-        for (Host host : datacenter.getHostList()) {
+        for (HostEntity host : datacenter.getHostList()) {
             totalMips += host.getTotalMips();
-            usedMips += host.getUtilizationOfCpu() * host.getTotalMips();
+            usedMips += 0.5 * host.getTotalMips(); // host.getUtilizationOfCpu() * host.getTotalMips();
         }
         
         return new MipsCalculation(totalMips, usedMips);
