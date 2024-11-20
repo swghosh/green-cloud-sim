@@ -509,12 +509,24 @@ public class CloudSim {
 		
 		int entities_size = entities.size();
 
-		for (SimEntity entity : entities) {
+		for (int i = 0; i < entities_size; i++) {
+			SimEntity entity = entities.get(i);
 			ent = entity;
 			if (ent.getState() == SimEntity.RUNNABLE) {
 				ent.run();
 			}
 		}
+
+		// for (SimEntity entity : entities) {
+		// 	ent = entity;
+		// 	printMessage("reached#1");
+		// 	if (ent.getState() == SimEntity.RUNNABLE) {
+		// 		printMessage("reached#2");
+		// 		ent.run();
+		// 		printMessage("reached#3");
+		// 	}
+		// 	printMessage("reached#4: " + ent.getClass());
+		// }
 				
 		// If there are more future events then deal with them
 		if (future.size() > 0) {
