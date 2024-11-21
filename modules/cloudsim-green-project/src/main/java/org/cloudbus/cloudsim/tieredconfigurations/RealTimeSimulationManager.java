@@ -82,7 +82,7 @@ public class RealTimeSimulationManager extends SimEntity {
 
                 case RealTimeSimulationTags.UPDATE_DATACENTER:
                     try {
-                        currentDatacenter = PowerMain.selectDatacenterBasedOnPowerData(powerData);
+                        currentDatacenter = BorgPowerMain.selectDatacenterBasedOnPowerData(powerData);
                         System.out.println(CloudSim.clock() + ": Hour " + (float)(CloudSim.clock()/3600) +
                                 ": Changed Datacenter (" + currentDatacenter.getName() +
                                 ") selection based on fossil-free percentage: " +
