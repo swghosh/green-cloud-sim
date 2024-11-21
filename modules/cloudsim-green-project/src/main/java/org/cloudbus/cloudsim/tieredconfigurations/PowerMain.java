@@ -63,12 +63,12 @@ public class PowerMain {
             cloudletList.add(createCloudlet(id++, brokerId, 1, 100000000));
             broker.submitCloudletList(cloudletList);
 
-            // Step 7: Start Simulation
+            // Step 6: Start Simulation
             CloudSim.startSimulation();
 
             CloudSim.stopSimulation();
 
-            // Step 8: Print Results
+            // Step 7: Print Results
             printCloudletResults(broker.getCloudletReceivedList());
         } catch (Exception e) {
             e.printStackTrace();
