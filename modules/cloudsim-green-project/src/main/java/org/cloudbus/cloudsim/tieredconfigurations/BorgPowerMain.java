@@ -39,9 +39,9 @@ public class BorgPowerMain {
             CloudSim.init(numUsers, calendar, traceFlag, 0.720);
 
             // Step 2: Load fossil-free percentages
-            Queue<Double> fossilFreePercentages = loadFossilFreePercentages("/powerBreakdownData.csv");
-            System.out.println(fossilFreePercentages);
-            PowerData initialPowerData = new PowerData(fossilFreePercentages.poll(), 0);
+            PowerData initialPowerData = new PowerData(100, 100);
+            RealTimeSimulationManager simulationManager = new RealTimeSimulationManager("SimulationManager", initialPowerData);
+            CloudSim.addEntity(simulationManager);
 
             // Step 3: Create fixed datacenters
             highResDatacenter = DatacenterFactory.createHighResourceDatacenter("High_Resource_Datacenter");
@@ -90,60 +90,11 @@ public class BorgPowerMain {
             broker.submitGuestList(vmList);
             broker.submitCloudletList(cloudletList);
             System.out.println("Submitted " + cloudletList.size() + " cloudlets to broker, " + vmList.size() + " VMs to broker");
-
-
-            // Step 7: Simulate for each hour
-            //monitors and updates the datacenter selection based on the fossil-free energy %
-            
-            Runnable monitor = () -> {
-                //track simulation time
-                double temp = 0;
-                //track the hours elapsed
-                double hour = 0;
-                String tempName = "";
-
-                List<String[]> datacenterLogs = new ArrayList<>();
-                
-                while (CloudSim.running()) {
-                    if (CloudSim.clock() <= temp) {
-//                        System.out.println("Clock: " + CloudSim.clock());
-                        if(!fossilFreePercentages.isEmpty() && temp/3600 > hour) {
-                            initialPowerData.setFossilFreePercentage(fossilFreePercentages.poll());
-                            hour += 1;
-                        }
-                        initialPowerData.setFossilFreePercentage(initialPowerData.getFossilFreePercentage());
-                        Datacenter selectedDatacenter = selectDatacenterBasedOnPowerData(initialPowerData);
-                        if (!selectedDatacenter.getName().equals(tempName)) {
-                            System.out.println(" ------- Hour: " + temp/3600 + " Update Datacenter: ("
-                                    + selectedDatacenter.getName() + ") Simulating based on fossil-free percentage: "
-                                    + initialPowerData.getFossilFreePercentage());
-                            tempName = selectedDatacenter.getName();
-                        }
-                        else {
-                            System.out.println(" ------- Hour: " + temp/3600 + " No Datacenter change based on " +
-                                    "fossil-free percentage: " + initialPowerData.getFossilFreePercentage());
-                        }
-                        datacenterLogs.add(new String[]{
-                                String.valueOf(temp / 3600),
-                                selectedDatacenter.getName(),
-                                String.valueOf(initialPowerData.getFossilFreePercentage())
-                        });
-                        temp += 1800;
-//                        if(temp > CloudSim.clock()) {temp = CloudSim.clock();}
-                    }
-                }
-                
-                // Time Series Plot for Datacenter Selection Over Time
-                System.out.println("Current working directory: " + System.getProperty("user.dir"));
-                DatacenterSelectionData.saveDatacenterSelectionCSV("./datacenterSelection.csv", datacenterLogs);
-            };
-
-            new Thread(monitor).start();
                       
             // Step 7: Start Simulation
             CloudSim.startSimulation();
 
-            CloudSim.terminateSimulation(System.currentTimeMillis() + 120000);
+//            CloudSim.terminateSimulation(System.currentTimeMillis() + 120000);
 
             CloudSim.stopSimulation();
 
@@ -182,8 +133,7 @@ public class BorgPowerMain {
         //broker.submitCloudletList(cloudletList);
     }
 
-
-    private static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) {
+    public static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) {
         double fossilFreePercentage = powerData.getFossilFreePercentage();
         if (fossilFreePercentage > 70) {
             return highResDatacenter;
@@ -193,7 +143,6 @@ public class BorgPowerMain {
             return lowResDatacenter;
         }
     }
-
 
     private static void printCloudletResults(List<Cloudlet> cloudlets) {
         System.out.println("========== OUTPUT ==========");
@@ -213,26 +162,5 @@ public class BorgPowerMain {
 
     private static DatacenterBroker createBroker() throws Exception {
         return new DatacenterBroker("Broker");
-    }
-
-    public static Queue<Double> loadFossilFreePercentages(String filePath) {
-        Queue<Double> percentages = new LinkedList<>();
-        try (InputStream inputStream = PowerMain.class.getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            boolean isHeader = true;
-            while ((line = reader.readLine()) != null) {
-                if (isHeader) {
-                    isHeader = false;
-                    continue;
-                }
-                String[] columns = line.split(",");
-                double fossilFreePercentage = Double.parseDouble(columns[28].trim());
-                percentages.add(fossilFreePercentage);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return percentages;
     }
 }
