@@ -7,15 +7,9 @@ import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,7 +31,7 @@ public class RealTimeSimulationManager extends SimEntity {
         System.out.println(fossilFreePercentages);
     }
 
-    // Load fossil-free percentages from the CSV file
+    // Load fossil-free percentages from the CSV file into a queue
     public static Queue<Double> loadFossilFreePercentages(String filePath) {
         Queue<Double> percentages = new LinkedList<>();
         try (InputStream inputStream = RealTimeSimulationManager.class.getClassLoader().getResourceAsStream(filePath);
@@ -64,7 +58,6 @@ public class RealTimeSimulationManager extends SimEntity {
         return percentages;
     }
 
-
     @Override
     public void startEntity() {
         // Schedule the first update at time 0
@@ -77,20 +70,18 @@ public class RealTimeSimulationManager extends SimEntity {
         synchronized (fossilFreePercentages) {
             switch (ev.getTag()) {
                 case RealTimeSimulationTags.CREATE_SIMULATOR:
-                    // Simulate power data change
                     if (!fossilFreePercentages.isEmpty()) {
                         simulatePowerDataChange();
 
                         schedule(getId(), 1800, RealTimeSimulationTags.CREATE_SIMULATOR);
                     } else {
-                        System.out.println("End of simulation data.");
+                        System.out.println("End of energy simulation data.");
                         return;
                     }
                     break;
 
                 case RealTimeSimulationTags.UPDATE_DATACENTER:
                     try {
-                        // Update datacenter selection based on power data
                         currentDatacenter = PowerMain.selectDatacenterBasedOnPowerData(powerData);
                         System.out.println(CloudSim.clock() + ": Hour " + (float)(CloudSim.clock()/3600) +
                                 ": Changed Datacenter (" + currentDatacenter.getName() +
@@ -130,24 +121,25 @@ public class RealTimeSimulationManager extends SimEntity {
     }
 }
 
-//    public void stopRealTimeUpdates() {
-//        scheduler.shutdown();
-//    }
+/*
+    public void stopRealTimeUpdates() {
+        scheduler.shutdown();
+    }
 
-//    private void simulatePowerDataChange() {
-//        if (currentHourIndex < fossilFreePercentages.size()) {
-//            double newFossilFreePercentage = fossilFreePercentages.get(currentHourIndex);
-//            powerData.setFossilFreePercentage(newFossilFreePercentage);
-//
-//            System.out.println("Simulated Power Data Update: Fossil-Free Percentage = " + newFossilFreePercentage);
-//            currentHourIndex++;
-//        } else {
-//            System.out.println("End of 23-hour simulation data.");
-//            stopRealTimeUpdates();
-//        }
-//    }
+    private void simulatePowerDataChange() {
+        if (currentHourIndex < fossilFreePercentages.size()) {
+            double newFossilFreePercentage = fossilFreePercentages.get(currentHourIndex);
+            powerData.setFossilFreePercentage(newFossilFreePercentage);
 
-/*    // Check every 1 hour
+            System.out.println("Simulated Power Data Update: Fossil-Free Percentage = " + newFossilFreePercentage);
+            currentHourIndex++;
+        } else {
+            System.out.println("End of 23-hour simulation data.");
+            stopRealTimeUpdates();
+        }
+    }
+
+   // Check every 1 hour
     public void startRealTimeUpdates() {
         scheduler.scheduleAtFixedRate(this::updatePowerDataAndReselectDatacenter, 0, 1, TimeUnit.HOURS);
     }
@@ -167,4 +159,5 @@ public class RealTimeSimulationManager extends SimEntity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } */
+    }
+*/
