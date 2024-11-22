@@ -26,9 +26,6 @@ public class BorgPowerMain {
     private static List<Cloudlet> cloudletList;
     private static List<Vm> vmList;
     private static Map<Integer, Vm> vmMap;
-    private static Datacenter highResDatacenter;
-    private static Datacenter mediumResDatacenter;
-    private static Datacenter lowResDatacenter;
 
     public static void main(String[] args) {
         try {
@@ -36,17 +33,15 @@ public class BorgPowerMain {
             int numUsers = 1;
             Calendar calendar = Calendar.getInstance();
             boolean traceFlag = false;
-            CloudSim.init(numUsers, calendar, traceFlag, 0.720);
+            CloudSim.init(numUsers, calendar, traceFlag);
 
-            // Step 2: Load fossil-free percentages
+            // Step 2: Create fixed datacenters
+            DatacenterFactory datacenterFactory = new DatacenterFactory();
+
+            // Step 3: Load fossil-free percentages
             PowerData initialPowerData = new PowerData(100, 100);
-            RealTimeSimulationManager simulationManager = new RealTimeSimulationManager("SimulationManager", initialPowerData);
+            RealTimeSimulationManager simulationManager = new RealTimeSimulationManager("SimulationManager", initialPowerData, datacenterFactory);
             CloudSim.addEntity(simulationManager);
-
-            // Step 3: Create fixed datacenters
-            highResDatacenter = DatacenterFactory.createHighResourceDatacenter("High_Resource_Datacenter");
-            mediumResDatacenter = DatacenterFactory.createMediumResourceDatacenter("Medium_Resource_Datacenter");
-            lowResDatacenter = DatacenterFactory.createLowResourceDatacenter("Low_Resource_Datacenter");
 
             // Step 4: Create broker
             DatacenterBroker broker = createBroker();
@@ -131,17 +126,6 @@ public class BorgPowerMain {
         // Submit VMs and Cloudlets to the broker
         //broker.submitGuestList(vmList);
         //broker.submitCloudletList(cloudletList);
-    }
-
-    public static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) {
-        double fossilFreePercentage = powerData.getFossilFreePercentage();
-        if (fossilFreePercentage > 70) {
-            return highResDatacenter;
-        } else if (fossilFreePercentage > 35) {
-            return mediumResDatacenter;
-        } else {
-            return lowResDatacenter;
-        }
     }
 
     private static void printCloudletResults(List<Cloudlet> cloudlets) {
