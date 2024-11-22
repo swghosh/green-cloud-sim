@@ -10,6 +10,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DatacenterFactory {
+    private static Datacenter highResDatacenter;
+    private static Datacenter mediumResDatacenter;
+    private static Datacenter lowResDatacenter;
+
+    public DatacenterFactory() throws Exception {
+        highResDatacenter = createHighResourceDatacenter("High_Resource_Datacenter");
+        mediumResDatacenter = createMediumResourceDatacenter("Medium_Resource_Datacenter");
+        lowResDatacenter = createLowResourceDatacenter("Low_Resource_Datacenter");
+    }
+
+    public static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) {
+        double fossilFreePercentage = powerData.getFossilFreePercentage();
+        if (fossilFreePercentage > 70) {
+            return highResDatacenter;
+        } else if (fossilFreePercentage > 35) {
+            return mediumResDatacenter;
+        } else {
+            return lowResDatacenter;
+        }
+    }
 
     // High resource datacenter
     public static Datacenter createHighResourceDatacenter(String name) throws Exception {
