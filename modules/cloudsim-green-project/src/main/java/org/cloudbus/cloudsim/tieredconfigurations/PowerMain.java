@@ -33,15 +33,13 @@ public class PowerMain {
             boolean traceFlag = false;
             CloudSim.init(numUsers, calendar, traceFlag);
 
+            // Step 2: Create fixed datacenters
+            DatacenterFactory datacenterFactory = new DatacenterFactory();
+
             // Step 2: Initialize Power Data and Simulation Manager
             PowerData initialPowerData = new PowerData(100, 100);
-            RealTimeSimulationManager simulationManager = new RealTimeSimulationManager("SimulationManager", initialPowerData);
+            RealTimeSimulationManager simulationManager = new RealTimeSimulationManager("SimulationManager", initialPowerData, datacenterFactory);
             CloudSim.addEntity(simulationManager);
-
-            // Step 3: Create fixed datacenters
-            highResDatacenter = DatacenterFactory.createHighResourceDatacenter("High_Resource_Datacenter");
-            mediumResDatacenter = DatacenterFactory.createMediumResourceDatacenter("Medium_Resource_Datacenter");
-            lowResDatacenter = DatacenterFactory.createLowResourceDatacenter("Low_Resource_Datacenter");
 
             // Step 4: Create broker
             DatacenterBroker broker = createBroker();
