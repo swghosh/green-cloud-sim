@@ -22,10 +22,12 @@ public class RealTimeSimulationManager extends SimEntity {
 
     private Datacenter currentDatacenter;
     private final PowerData powerData;
-    private Queue<Double> fossilFreePercentages; // Holds fossil-free percentages from CSV
+    private final Queue<Double> fossilFreePercentages; // Holds fossil-free percentages from CSV
+    private DatacenterFactory datacenterFactory;
 
-    public RealTimeSimulationManager(String name, PowerData initialPowerData) {
+    public RealTimeSimulationManager(String name, PowerData initialPowerData, DatacenterFactory datacenterFactory) {
         super(name);
+        this.datacenterFactory = datacenterFactory;
         this.powerData = initialPowerData;
         this.fossilFreePercentages = loadFossilFreePercentages("powerBreakdownData.csv");
         System.out.println(fossilFreePercentages);
@@ -75,14 +77,14 @@ public class RealTimeSimulationManager extends SimEntity {
 
                         schedule(getId(), 1800, RealTimeSimulationTags.CREATE_SIMULATOR);
                     } else {
-                        System.out.println("End of energy simulation data.");
+                        System.out.println("End of gathered API energy simulation data.");
                         return;
                     }
                     break;
 
                 case RealTimeSimulationTags.UPDATE_DATACENTER:
                     try {
-                        currentDatacenter = BorgPowerMain.selectDatacenterBasedOnPowerData(powerData);
+                        currentDatacenter = DatacenterFactory.selectDatacenterBasedOnPowerData(powerData);
                         System.out.println(CloudSim.clock() + ": Hour " + (float)(CloudSim.clock()/3600) +
                                 ": Changed Datacenter (" + currentDatacenter.getName() +
                                 ") selection based on fossil-free percentage: " +
