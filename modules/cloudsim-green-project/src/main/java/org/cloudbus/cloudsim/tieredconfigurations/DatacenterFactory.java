@@ -20,6 +20,10 @@ public class DatacenterFactory {
         lowResDatacenter = createLowResourceDatacenter("Low_Resource_Datacenter");
     }
 
+    public static Datacenter getLowResDatacenter() {
+        return lowResDatacenter;
+    }
+
     public static Datacenter selectDatacenterBasedOnPowerData(PowerData powerData) {
         double fossilFreePercentage = powerData.getFossilFreePercentage();
         if (fossilFreePercentage > 70) {
