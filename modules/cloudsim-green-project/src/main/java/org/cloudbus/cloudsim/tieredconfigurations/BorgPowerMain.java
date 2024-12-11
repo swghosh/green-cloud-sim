@@ -108,7 +108,7 @@ public class BorgPowerMain {
     private static void computeGreenMetrics(GreenMetricsCalculator calculator, PowerData powerData, List<Cloudlet> cloudlets) {
         // we can use the percentages for intensity, it yields the same result. Since renewable and
         // conventional are percentages of the total Carbon Intensity (gCO2eq/kWh)
-        double renewableIntensity = powerData.getRenewablePercentage() * 10;
+        double renewableIntensity = powerData.getRenewablePercentage();
         double conventionalIntensity = 100 - renewableIntensity;
         double totalWorkloads = cloudletList.size();
         double totalWorkloadDuration = 0.742 * totalWorkloads;
