@@ -130,6 +130,41 @@
             </resource>
         </resources>
         <plugins>
+            <!-- add this block if you need a fat jar and run spark embedded -->
+            <!-- run directly: -->
+            <!-- java --add-exports java.base/sun.nio.ch=ALL-UNNAMED -cp ~/.m2/repository/org/cloudbus/cloudsim/cloudsim-green-project/7.0.0-alpha/cloudsim-green-project-7.0.0-alpha-jar-with-dependencies.jar org.cloudbus.cloudsim.workload.Borgv2Dataset /data/clusterdata-2011-2/job_events -->
+            <!-- <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.1</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assemble-all</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.cloudbus.cloudsim.workload.Borgv2Dataset</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin> -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
