@@ -56,7 +56,6 @@
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.9</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.maxmind.geoip2/geoip2 -->
@@ -84,6 +83,20 @@
             <artifactId>cloudsim</artifactId>
             <version>7.0.0-alpha</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- Apache Spark -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.13</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.13</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.13</artifactId>
         </dependency>
 
         <!-- Gson Library for JSON Parsing -->
