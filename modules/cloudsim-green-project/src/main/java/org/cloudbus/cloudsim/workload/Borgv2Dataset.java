@@ -3,24 +3,21 @@ package org.cloudbus.cloudsim.workload;
 // Run with: 
 // $SPARK_PATH~/bin/spark-submit --class "org.cloudbus.cloudsim.workload.Borgv2Dataset"  --master "local[*]" modules/cloudsim-green-project/target/cloudsim-green-project-7.0.0-alpha.jar /data/clusterdata-2011-2/job_events
 
-// import org.apache.spark.SparkConf;
-// import org.apache.spark.api.java.JavaSparkContext;
-
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
+import org.apache.spark.sql.types.Metadata;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
-import org.apache.spark.sql.types.Metadata;
 
 
 public class Borgv2Dataset {
     static String appName = "CloudSim";
 
     public static void main(String[] args) {
-        //  SparkConf sparkConf = new SparkConf()
-        //         .setMaster("local[*]")
+        // SparkConf sparkConf = new SparkConf()
+        //         .setMaster("local[4]")
         //         .setAppName(appName);
         // JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 
